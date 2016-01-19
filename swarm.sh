@@ -5,10 +5,10 @@ set -e
 
 
 up() {
-  export DIGITALOCEAN_ACCESS_TOKEN=$DO_PAT
   export DIGITALOCEAN_SIZE=4gb
-  export DIGITALOCEAN_USERDATA='cloud-config.yml'
 
+  # change the ubuntu mirror to not DO mirrors.
+  export DIGITALOCEAN_USERDATA='cloud-config.yml'
 
   echo "booting swarm: $name in $region"
 
@@ -66,7 +66,7 @@ down() {
 }
 
 usage() {
-  echo "usage: $0 [-c <node count>] [-d] [-n <cluster name>] [-r <region>]"
+  echo "usage: $0 [-c <node count>] [-d] [-n <cluster name>] [-r <region>] [-t <do token>]"
   exit 0
 }
 
@@ -75,7 +75,7 @@ name="swarm"
 region="nyc1"
 node_count=3
 
-while getopts ":c:dn:r:" opt; do
+while getopts ":c:dn:r:t" opt; do
   case "${opt}" in
     c)
       node_count=${OPTARG}
@@ -93,11 +93,20 @@ while getopts ":c:dn:r:" opt; do
       region=${OPTARG}
       ;;
 
+    t)
+      export DIGITALOCEAN_ACCESS_TOKEN=${OPTARG}
+      ;;
+
     *)
       usage
       ;;
   esac
 done
+
+if [[ $DIGITALOCEAN_ACCESS_TOKEN == "" ]]; then
+  echo "please supply DIGITALOCEAN_ACCESS_TOKEN environment variable or the -t option"
+  exit 1
+fi
 
 shift $((OPTIND-1))
 action="$1"; shift
