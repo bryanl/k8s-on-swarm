@@ -17,6 +17,10 @@ Shut swarm down:
 
 `./swarm.sh -n cluster01 down`
 
+Set up your Docker environment
+
+`eval $(docker-machine env --swarm cluster01-master)`
+
 Boot kubernetes
 
 `docker-compose --x-networking -f k8s-swarm.yml up`
