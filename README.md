@@ -24,5 +24,7 @@ Boot kubernetes
 
 **warning** This script spins up DigitalOcean Droplets which may incur a cost.
 
-
 Based on [https://github.com/docker/swarm-frontends](https://github.com/docker/swarm-frontends).
+
+
+(this doesn't do anything useful, it was only a fun experiment)
